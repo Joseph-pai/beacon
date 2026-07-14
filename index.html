@@ -937,8 +937,8 @@ function sendEmail(){
   if(!name||!contact||!message){showToast('請填寫完整資訊','t-err');return}
   if(typeof emailjs!=='undefined'){
     emailjs.send('service_e947lpo','template_9j5jhsa',{
-      from_name:name,
-      from_contact:contact,
+      name:name,
+      email:contact,
       message:message
     }).then(()=>{
       document.getElementById('contact-name').value='';
