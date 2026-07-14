@@ -509,7 +509,7 @@ footer{background:var(--card);border-top:1px solid var(--border2);padding:2rem 2
 //  EMAILJS INIT
 // ══════════════════════════════════════════
 if(typeof emailjs!=='undefined'){
-  emailjs.init({publicKey:'YOUR_PUBLIC_KEY'});
+  emailjs.init({publicKey:'MiYzzM6zQj1ww09Pz'});
 }
 
 // ══════════════════════════════════════════
@@ -936,12 +936,12 @@ function sendEmail(){
   const message=document.getElementById('contact-message').value.trim();
   if(!name||!contact||!message){showToast('請填寫完整資訊','t-err');return}
   if(typeof emailjs!=='undefined'){
-    emailjs.send('service_beacon','template_beacon',{
+    emailjs.send('service_e947lpo','template_9j5jhsa',{
       from_name:name,
       from_contact:contact,
       message:message
     },{
-      publicKey:'YOUR_PUBLIC_KEY'
+      publicKey:'MiYzzM6zQj1ww09Pz'
     }).then(()=>{
       document.getElementById('contact-name').value='';
       document.getElementById('contact-contact').value='';
