@@ -935,22 +935,27 @@ function sendEmail(){
   const contact=document.getElementById('contact-contact').value.trim();
   const message=document.getElementById('contact-message').value.trim();
   if(!name||!contact||!message){showToast('請填寫完整資訊','t-err');return}
-  if(typeof emailjs!=='undefined'){
-    emailjs.send('service_e947lpo','template_9j5jhsa',{
-      name:name,
-      email:contact,
-      message:message
-    }).then(()=>{
+  fetch('https://api.emailjs.com/api/v1.0/email/send',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      service_id:'service_e947lpo',
+      template_id:'template_9j5jhsa',
+      user_id:'MiYzzM6zQj1ww09Pz',
+      template_params:{name:name,email:contact,message:message}
+    })
+  }).then(r=>{
+    if(r.ok){
       document.getElementById('contact-name').value='';
       document.getElementById('contact-contact').value='';
       document.getElementById('contact-message').value='';
       showToast('✅ 訊息已發送！我們會盡快回覆','t-ok');
-    }).catch(()=>{
+    }else{
       fallbackSendEmail(name,contact,message);
-    });
-  }else{
+    }
+  }).catch(()=>{
     fallbackSendEmail(name,contact,message);
-  }
+  });
 }
 function fallbackSendEmail(name,contact,message){
   const subject=encodeURIComponent('來自 APP Beacon 網站的聯絡訊息 - '+name);
