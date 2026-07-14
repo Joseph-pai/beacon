@@ -357,7 +357,7 @@ footer{background:var(--card);border-top:1px solid var(--border2);padding:2rem 2
   <div class="ctab">
     <h2>聯絡我們</h2>
     <p>有任何問題或合作需求，歡迎隨時與我們聯繫</p>
-    <form id="contact-form" onsubmit="sendEmail();return false;" style="margin-top:1.5rem">
+    <form id="contact-form" onsubmit="return sendEmail()" style="margin-top:1.5rem">
       <div class="fg"><label>發信人</label><input id="contact-name" placeholder="請輸入您的姓名" required></div>
       <div class="fg"><label>聯繫方式</label><input id="contact-contact" type="email" placeholder="請輸入您的電子郵件" required></div>
       <div class="fg"><label>內容</label><textarea id="contact-message" rows="6" placeholder="請輸入您想說的內容..." required style="resize:vertical"></textarea></div>
@@ -926,14 +926,18 @@ function sendEmail(){
   const name=document.getElementById('contact-name').value.trim();
   const contact=document.getElementById('contact-contact').value.trim();
   const message=document.getElementById('contact-message').value.trim();
-  if(!name||!contact||!message){showToast('請填寫完整資訊','t-err');return}
+  if(!name||!contact||!message){showToast('請填寫完整資訊','t-err');return false}
   const subject=encodeURIComponent('來自 APP Beacon 網站的聯絡訊息 - '+name);
   const body=encodeURIComponent('發信人：'+name+'\n聯繫方式：'+contact+'\n\n'+message);
-  window.location.href='mailto:a18911289122@gmail.com?subject='+subject+'&body='+body;
+  const mailtoLink='mailto:a18911289122@gmail.com?subject='+subject+'&body='+body;
+  const a=document.createElement('a');
+  a.href=mailtoLink;
+  a.click();
   document.getElementById('contact-name').value='';
   document.getElementById('contact-contact').value='';
   document.getElementById('contact-message').value='';
   showToast('📧 正在開啟郵件客戶端...','t-ok');
+  return false;
 }
 
 function showToast(msg,cls='t-inf'){
