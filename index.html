@@ -503,6 +503,12 @@ footer{background:var(--card);border-top:1px solid var(--border2);padding:2rem 2
 <div class="toast" id="toastEl"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script type="text/javascript">
+  (function(){
+      emailjs.init("MiYzzM6zQj1ww09Pz");
+  })();
+</script>
 <script>
 // ══════════════════════════════════════════
 //  PARTICLES (light theme)
@@ -927,14 +933,32 @@ function sendEmail(){
   const contact=document.getElementById('contact-contact').value.trim();
   const message=document.getElementById('contact-message').value.trim();
   if(!name||!contact||!message){showToast('請填寫完整資訊','t-err');return false}
-  const subject=encodeURIComponent('來自 APP Beacon 網站的聯絡訊息 - '+name);
-  const body=encodeURIComponent('發信人：'+name+'\n聯繫方式：'+contact+'\n\n'+message);
-  const mailtoLink='mailto:a18911289122@gmail.com?subject='+subject+'&body='+body;
-  window.location.href = mailtoLink;
-  document.getElementById('contact-name').value='';
-  document.getElementById('contact-contact').value='';
-  document.getElementById('contact-message').value='';
-  showToast('📧 正在開啟郵件客戶端...\n如果沒有開啟，請檢查瀏覽器的郵件處理設定','t-ok');
+
+  const btn = document.querySelector('#contact-form button[type="submit"]');
+  const originalText = btn.textContent;
+  btn.textContent = '發送中...';
+  btn.disabled = true;
+
+  emailjs.send('service_h971116', 'template_9j5jhsa', {
+    name: name,
+    contact: contact,
+    message: message
+  })
+  .then(() => {
+    showToast('📧 郵件發送成功！我們會盡快與您聯繫。','t-ok');
+    document.getElementById('contact-name').value='';
+    document.getElementById('contact-contact').value='';
+    document.getElementById('contact-message').value='';
+  })
+  .catch((err) => {
+    console.error('EmailJS Error:', err);
+    showToast('❌ 發送失敗，請稍後再試或直接聯繫我們。','t-err');
+  })
+  .finally(() => {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  });
+
   return false;
 }
 
