@@ -503,13 +503,13 @@ footer{background:var(--card);border-top:1px solid var(--border2);padding:2rem 2
 <div class="toast" id="toastEl"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 // ══════════════════════════════════════════
 //  EMAILJS INIT
 // ══════════════════════════════════════════
 if(typeof emailjs!=='undefined'){
-  emailjs.init('YOUR_USER_ID');
+  emailjs.init({publicKey:'YOUR_PUBLIC_KEY'});
 }
 
 // ══════════════════════════════════════════
@@ -940,12 +940,14 @@ function sendEmail(){
       from_name:name,
       from_contact:contact,
       message:message
+    },{
+      publicKey:'YOUR_PUBLIC_KEY'
     }).then(()=>{
       document.getElementById('contact-name').value='';
       document.getElementById('contact-contact').value='';
       document.getElementById('contact-message').value='';
       showToast('✅ 訊息已發送！我們會盡快回覆','t-ok');
-    },()=>{
+    }).catch(()=>{
       fallbackSendEmail(name,contact,message);
     });
   }else{
